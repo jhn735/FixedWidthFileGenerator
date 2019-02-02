@@ -1,7 +1,6 @@
 package com.file.format;
 
-import java.util.Map;
-import java.util.SortedMap;
+import java.util.*;
 
 public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
 	default String formatEntry( Map<String, String> entry ){
@@ -17,5 +16,15 @@ public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
 		}
 
 		return formattedEntryString.toString();
+	}
+
+	default List<String> getOrderedListOfFields(){
+		List<String> orderedListOfFields = new ArrayList<>();
+
+		for( FieldIdentifier fieldID: this.keySet() ){
+			orderedListOfFields.add( fieldID.getName() );
+		}
+
+		return Collections.unmodifiableList( orderedListOfFields );
 	}
 }
