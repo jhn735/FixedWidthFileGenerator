@@ -2,7 +2,7 @@ package com.file.format.fixedWidth;
 
 import com.file.format.FieldIdentifier;
 
-public class FixedWidthFieldIdentifier implements FieldIdentifier {
+public class FixedWidthFieldIdentifier implements FieldIdentifier, Comparable<FixedWidthFieldIdentifier> {
 	protected static final String INVALID_START_POS_ERR_MSG =
 			"The start position of a fixed width field must be greater than or equal to 0";
 
