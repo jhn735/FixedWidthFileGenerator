@@ -2,7 +2,16 @@ package com.file.format;
 
 import java.util.*;
 
+/**
+ * A file format is essentially a list of fields mapped to methods of formatting values.
+ * This map is ordered based off of the implementation of FieldIdentifier used.
+ */
 public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
+	/**
+	 * Formats the entire given entry.
+	 * @param entry An entry of field names mapped to their respective values.
+	 * @return The entry formatted as a string.
+	 */
 	default String formatEntry( Map<String, String> entry ){
 		StringBuilder formattedEntryString = new StringBuilder();
 
@@ -18,6 +27,10 @@ public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
 		return formattedEntryString.toString();
 	}
 
+	/**
+	 * Retrieves the list of field names.
+	 * @return Immutable list of field names ordered by the natural order defined in the implementation of the FieldIdentifier interface.
+	 */
 	default List<String> getOrderedListOfFields(){
 		List<String> orderedListOfFields = new ArrayList<>();
 
