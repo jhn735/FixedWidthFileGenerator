@@ -12,19 +12,19 @@ public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
 	 * @param entry An entry of field names mapped to their respective values.
 	 * @return The entry formatted as a string.
 	 */
-	default String formatEntry( Map<String, String> entry ){
-		StringBuilder formattedEntryString = new StringBuilder();
+	default <T> List<T> formatEntry( Map<String, List<T> > entry ){
+		List<T> formattedEntry = new ArrayList<>();
 
 		for( Map.Entry< FieldIdentifier, ValueFormat> formatEntry: this.entrySet() ){
 			ValueFormat     mappedValue = formatEntry.getValue();
 			FieldIdentifier fieldID     = formatEntry.getKey();
 
-			String valueToFormat  = entry.get( fieldID.getName() );
-			String formattedValue = mappedValue.formatValue( valueToFormat );
-			formattedEntryString.append( formattedValue );
+			List<T> valueToFormat  = entry.get( fieldID.getName() );
+			List<T> formattedValue = mappedValue.formatValue( valueToFormat );
+			formattedEntry.addAll( formattedValue );
 		}
 
-		return formattedEntryString.toString();
+		return formattedEntry;
 	}
 
 	/**
