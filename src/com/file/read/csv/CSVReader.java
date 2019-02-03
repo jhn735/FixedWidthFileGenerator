@@ -19,11 +19,11 @@ public class CSVReader extends BufferedReader {
 		this( csvFile, CSVReader.DEFAULT_VALUE_DELIMITER );
 	}
 
-	public Map< String, List<String> > readAsCSV() throws IOException, ParseException {
+	public Map< String, List<String> > readAsCSVToMap() throws IOException, ParseException {
 		return readAsCSVToMap();
 	}
 
-	public CSVMap readAsCSVToMap() throws IOException, ParseException {
+	public CSVMap readAsCSVMap() throws IOException, ParseException {
 		List<String> columns = this.readCSVLine( this.readLine() );
 
 		CSVMap csvMap = new CSVMap( columns );
@@ -81,7 +81,7 @@ public class CSVReader extends BufferedReader {
 		}
 
 		public int sizeWithHeader(){
-			return this._size + 1;
+			return this.size() + 1;
 		}
 	}
 
