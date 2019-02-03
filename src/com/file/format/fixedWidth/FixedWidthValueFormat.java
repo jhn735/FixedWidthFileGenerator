@@ -37,6 +37,10 @@ public abstract class FixedWidthValueFormat implements ValueFormat {
 		this( FixedWidthValueFormat.DEFAULT_FORMAT_MODE, FixedWidthValueFormat.DEFAULT_ALIGNMENT, length, padding );
 	}
 
+	public FixedWidthValueFormat( String mode, String alignment, int length, String padding ){
+		this( FixedWidthFormatMode.parseMode(mode), FixedWidthFieldAlignment.parseAlignment(alignment), length, padding );
+	}
+
 	@Override
 	public <T> List<T> formatValue( List<T> value ){
 		if( value.size() >= this._fieldLength ){
