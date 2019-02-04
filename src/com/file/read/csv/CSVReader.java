@@ -28,7 +28,7 @@ public class CSVReader extends BufferedReader {
 	 * @throws IOException If something goes wrong with reading contents.
 	 * @throws ParseException If contents are not in csv format.
 	 */
-	public CSV readAsCSVMap() throws IOException, ParseException {
+	public CSV readAsCSV() throws IOException, ParseException {
 		List<String> columns = this.readCSVLine();
 
 		CSV csv = new CSV( columns );
