@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * Special case of buffered reader which reads file as a csv file.
+ */
 public class CSVReader extends BufferedReader {
 	private static final Character DEFAULT_VALUE_DELIMITER = ',';
 
@@ -19,70 +22,46 @@ public class CSVReader extends BufferedReader {
 		this( csvFile, CSVReader.DEFAULT_VALUE_DELIMITER );
 	}
 
-	public Map< String, List<String> > readAsCSVToMap() throws IOException, ParseException {
-		return readAsCSVToMap();
-	}
+	/**
+	 * Reads the contents of this reader as a csv into a CSV object.
+	 * @return The contents of the reader in the form of a CSV instance.
+	 * @throws IOException If something goes wrong with reading contents.
+	 * @throws ParseException If contents are not in csv format.
+	 */
+	public CSV readAsCSVMap() throws IOException, ParseException {
+		List<String> columns = this.readCSVLine();
 
-	public CSVMap readAsCSVMap() throws IOException, ParseException {
-		List<String> columns = this.readCSVLine( this.readLine() );
-
-		CSVMap csvMap = new CSVMap( columns );
+		CSV csv = new CSV( columns );
 
 		try {
 			Stream<String> lines = this.lines();
 			lines.forEach(line -> {
-				List<String> values = this.readCSVLine(line);
-				csvMap.add(values);
+				List<String> values = CSVReader.readLineAsCSVLine( line, this._delimiter );
+				csv.add(values);
 			});
 		} catch( IllegalArgumentException i ){
-			throw new ParseException( i.getMessage(), csvMap.sizeWithHeader() );
+			throw new ParseException( i.getMessage(), csv.lineCountWithHeader() );
 		}
 
-		return csvMap;
+		return csv;
 	}
 
-	private List<String> readCSVLine( String line ){
-		String[] separatedValues = line.split(  this._delimiter );
+	/**
+	 * Reads next line and formats it into a list of values which were separated by the reader's delimiter.
+	 * @return A list of String values.
+	 */
+	public List<String> readCSVLine() throws IOException {
+		return CSVReader.readLineAsCSVLine( this.readLine(), this._delimiter );
+	}
+
+	/**
+	 * Formats the given string into a list of value which where separated by the given delimiter.
+	 * @param line The given string representing a line in the CSV file.
+	 * @param delimiter The delimiter which is supposed to separate individual values within the csv file.
+	 * @return A list of string values.
+	 */
+	private static List<String> readLineAsCSVLine( String line, String delimiter ){
+		String[] separatedValues = line.split( delimiter );
 		return Arrays.asList( separatedValues );
 	}
-
-	public static class CSVMap extends HashMap< String, List<String> >{
-		private final List<String> _columns;
-
-		private Integer _size;
-		public CSVMap( List<String> columns ){
-			super();
-			this._columns = Collections.unmodifiableList( columns );
-			for( String column: this._columns ){
-				super.put( column, new ArrayList<>() );
-			}
-
-			this._size = 0;
-		}
-
-		public void add( List<String> csvLine ){
-			if( csvLine.size() != this._columns.size() ){
-				throw new IllegalArgumentException("The number of values on a line given must be equal to the number of columns.");
-			}
-			this._size++;
-			for( int columnNumber = 0; columnNumber < this._columns.size(); columnNumber++ ){
-				String column = this._columns.get(columnNumber);
-				String value  = csvLine.get( columnNumber );
-				this.get(column).add( value );
-			}
-		}
-
-		public String get( String column, int rowNumber ) throws ArrayIndexOutOfBoundsException {
-			return this.get( column ).get( rowNumber );
-		}
-
-		public int size(){
-			return this._size;
-		}
-
-		public int sizeWithHeader(){
-			return this.size() + 1;
-		}
-	}
-
 }
