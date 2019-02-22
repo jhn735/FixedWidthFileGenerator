@@ -2,9 +2,6 @@ package com.file.format.fixedWidth;
 
 import com.file.format.FieldIdentifier;
 
-/**
- * Field Identifier implementation for fixed width format. Implemented to be sorted by the field's start position.
- */
 public class FixedWidthFieldIdentifier implements FieldIdentifier, Comparable<FixedWidthFieldIdentifier> {
 	protected static final String INVALID_START_POS_ERR_MSG =
 			"The start position of a fixed width field must be greater than or equal to 0";
@@ -21,21 +18,11 @@ public class FixedWidthFieldIdentifier implements FieldIdentifier, Comparable<Fi
 		}
 	}
 
-	/**
-	 * See {@link FieldIdentifier#getName()}.
-	 * @return The name of the field.
-	 */
 	@Override
 	public String getName() {
 		return this._name;
 	}
 
-	/**
-	 * Implemented to be sorted by the start position of the fixed width field.
-	 * See {@link java.lang.Comparable#compareTo(Object)}.
-	 * @param o object to be compared.
-	 * @return A number representing result of comparison.
-	 */
 	@Override
 	public int compareTo( FixedWidthFieldIdentifier o ){
 		return this._startPosition.compareTo( o._startPosition );

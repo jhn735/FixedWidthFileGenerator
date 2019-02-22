@@ -8,7 +8,7 @@ import java.util.*;
  */
 public interface FileFormat extends SortedMap< FieldIdentifier, ValueFormat > {
 	/**
-	 * Formats the entire given entry assuming each value is compose of zero or more objects.
+	 * Formats the entire given entry.
 	 * @param entry An entry of field names mapped to their respective values.
 	 * @return The entry formatted as a string.
 	 */
